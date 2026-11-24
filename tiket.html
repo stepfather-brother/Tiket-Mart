@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TiketMart ID</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Poppins,sans-serif;background:#f4f7fc;color:#1e293b;padding-bottom:110px}
+.header{position:sticky;top:0;z-index:999;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+.brand{display:flex;align-items:center;gap:2px}
+.brand img{width:52px;height:52px}
+.brand h1{font-size:30px;font-weight:800;letter-spacing:-1px}
+.brand p{font-size:10px;color:#64748b;font-weight:600}
+.right{display:flex;gap:8px}
+.country,.menu{height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.country{padding:0 12px;background:#fff;border:1px solid #e2e8f0;font-weight:700}
+.menu{width:40px;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff}
+.wrap{max-width:820px;margin:auto;padding:12px 12px 0}
+.hero{position:relative}
+.hero img{width:100%;display:block;border-radius:22px}
+.overlay{position:absolute;inset:0;border-radius:22px;background:linear-gradient(to top,rgba(0,0,0,.72),transparent 60%)}
+.event{position:absolute;left:18px;bottom:18px;color:#fff}
+.event h2{font-size:22px}
+.page-title{margin:16px 4px 12px}
+.page-title h3{font-size:22px}
+.page-title p{font-size:13px;color:#64748b}
+.progress{background:#fff;padding:16px;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.06);margin-bottom:16px}
+.steps{display:flex;align-items:center}
+.step{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.active{background:#2563eb;color:#fff}.inactive{background:#e2e8f0;color:#94a3b8}
+.line{flex:1;height:5px;margin:0 6px;border-radius:99px;background:#e2e8f0}.line.active-line{background:#2563eb}
+.labels{display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:8px}
+.ticket{background:#fff;border-radius:20px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.ticket:before,.ticket:after{content:'';position:absolute;top:58%;width:30px;height:30px;background:#f4f7fc;border-radius:50%}
+.ticket:before{left:-15px}.ticket:after{right:-15px}
+.top{display:flex;justify-content:space-between}
+.name{font-size:16px;font-weight:800}
+.sale{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:5px 10px;border-radius:999px;font-size:10px;font-weight:800}
+.meta{font-size:12px;color:#6b7280;line-height:1.7;margin-top:6px}
+.divider{border-top:2px dashed #d1d5db;margin:12px -14px}
+.bottom{display:flex;justify-content:space-between;align-items:center}
+.price{font-size:22px;font-weight:800;color:#2563eb}
+.select-btn,.qbtn{border:none;cursor:pointer}
+.select-btn{background:#2563eb;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700}
+.qty{display:none;align-items:center;gap:8px}
+.qbtn{width:36px;height:36px;border-radius:10px;background:#2563eb;color:#fff;font-size:18px}
+.brand-footer{margin-top:10px;padding-top:10px;border-top:1px solid #eef2f7;font-size:12px;color:#64748b}
+.signature{text-align:center;margin-top:50px;margin-bottom:20px}
+.signature img{width:110px;height:110px;object-fit:contain}
+.signature h2{font-size:36px;font-weight:800;letter-spacing:-1px;margin-top:8px}
+.signature p{color:#64748b}
+.floating{position:fixed;left:12px;right:12px;bottom:12px;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);padding:15px 18px;border-radius:22px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,.15)}
+.total{font-size:22px;font-weight:800}
+.buy{border:none;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;padding:15px 24px;border-radius:14px;font-weight:800}
+.buy:disabled{opacity:.4}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="brand"><img src="logo.png"><div><h1>TiketMart</h1><p>Official Ticketing Platform</p></div></div>
+<div class="right"><div class="country">🇮🇩 ID</div><div class="menu">☰</div></div>
+</header>
+
+<div class="wrap">
+<div class="hero"><img src="banner.png"><div class="overlay"></div><div class="event"><h2>Cooltura Festival 2026</h2><p>Tiket resmi & terpercaya</p></div></div>
+
+<div class="page-title"><h3>Pilih Tiket</h3><p>Pilih kategori tiket untuk melanjutkan pemesanan.</p></div>
+
+<div class="progress"><div class="steps"><div class="step active">1</div><div class="line active-line"></div><div class="step inactive">2</div><div class="line"></div><div class="step inactive">3</div><div class="line"></div><div class="step inactive">4</div></div><div class="labels"><span>Kategori</span><span>Data</span><span>Pembayaran</span><span>Selesai</span></div></div>
+
+<div id="cards"></div>
+
+<div class="signature">
+<img src="logo.png">
+<h2>TiketMart</h2>
+<p>Official Ticketing Platform</p>
+<p>Secure • Trusted • Fast</p>
+</div>
+</div>
+
+<div class="floating">
+<div><div id="qtyText">0 Tiket Dipilih</div><div id="totalText" class="total">Rp 0</div></div>
+<button id="checkout" class="buy" disabled>BELI TIKET</button>
+</div>
+
+<script>
+// Format: [Nama, Harga, Step] -> step = kelipatan jumlah tiket per klik
+// Sendiri = 1, Berdua = 2, Berempat = 4
+const tickets=[
+  ["Presale 2 - Sendiri",125000,1],
+  ["Presale 2 - Berdua (per orang)",110000,2],
+  ["Presale 2 - Berempat (per orang)",95000,4]
+];
+const cart={},cards=document.getElementById('cards');
+const rp=n=>"Rp "+n.toLocaleString('id-ID');
+
+tickets.forEach((t,i)=>{
+  cart[t[0]]=0;
+  // Nilai awal ditampilkan sesuai step (1, 2, atau 4)
+  cards.innerHTML+=`<div class="ticket"><div class="top"><div class="name">${t[0]}</div><div class="sale">ON SALE</div></div><div class="meta">• Tiket resmi TiketMart<br>• Akses masuk sesuai kategori<br>• Transaksi aman & terpercaya<br>• Pembelian kelipatan ${t[2]} tiket</div><div class="divider"></div><div class="bottom"><div class="price">${rp(t[1])}</div><div><button class="select-btn" id="s${i}" onclick="start(${i})">Pilih Tiket</button><div class="qty" id="q${i}"><button class="qbtn" onclick="minus(${i})">−</button><div id="n${i}">${t[2]}</div><button class="qbtn" onclick="plus(${i})">+</button></div></div></div><div class="brand-footer">Official Ticketing Partner • TiketMart</div></div>`;
+});
+
+// Mulai: set cart = step (bukan 1)
+function start(i){
+  const step=tickets[i][2];
+  cart[tickets[i][0]]=step;
+  toggle(i,false);
+  render(i);
+}
+
+// Plus: tambah sesuai step
+function plus(i){
+  const step=tickets[i][2];
+  cart[tickets[i][0]]+=step;
+  render(i);
+}
+
+// Minus: kurang sesuai step
+function minus(i){
+  const step=tickets[i][2];
+  cart[tickets[i][0]]-=step;
+  if(cart[tickets[i][0]]<=0){
+    cart[tickets[i][0]]=0;
+    toggle(i,true);
+  }
+  render(i);
+}
+
+function toggle(i,s){
+  document.getElementById('s'+i).style.display=s?'block':'none';
+  document.getElementById('q'+i).style.display=s?'none':'flex';
+}
+
+function render(i){
+  let e=document.getElementById('n'+i);
+  if(e)e.textContent=cart[tickets[i][0]] || tickets[i][2];
+  let qty=0,total=0,items=[];
+  tickets.forEach(t=>{
+    let q=cart[t[0]];
+    if(q){qty+=q; total+=q*t[1]; items.push({jenis:t[0],jumlah:q,harga:t[1]})}
+  });
+  qtyText.textContent=`${qty} Tiket Dipilih`;
+  totalText.textContent=rp(total);
+  checkout.disabled=!qty;
+  localStorage.setItem('etatix_cart',JSON.stringify({items,totalQty:qty,totalPrice:total}));
+}
+
+checkout.onclick=()=>location.href='form.html';
+</script>
+</body>
+</html>
