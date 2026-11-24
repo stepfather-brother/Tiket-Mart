@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#08a4ff" name="theme-color"/>
+<meta content"Tiket Pemesanan="description"/>
+<title>TiketMart | Data Pemesanan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+
+    /* ========================
+       RESET & BASE
+    ======================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #222;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================
+       CONTAINER
+    ======================== */
+
+    .container {
+      max-width: 560px;
+      margin: auto;
+      padding-bottom: 160px;
+    }
+
+    /* ========================
+       HEADER
+    ======================== */
+
+    header {
+      background: #fff;
+      padding: 20px;
+      border-bottom: 1px solid #ececec;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span:first-child {
+      color: #08a4ff;
+    }
+
+    .logo span:last-child {
+      color: #222;
+    }
+
+    /* ========================
+       STEPPER
+    ======================== */
+
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      padding: 25px 20px;
+      background: #f4f7fb;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 60%;
+      width: 80%;
+      height: 2px;
+      background: #d9d9d9;
+      transition: background 0.3s ease;
+    }
+
+    /* FIX: Garis stepper berubah biru jika step sebelumnya sudah completed */
+    .step.completed:not(:last-child)::after {
+      background: #08a4ff;
+    }
+
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      background: #d8dce7;
+      font-weight: bold;
+      color: #666;
+      position: relative;
+      z-index: 2;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .active .circle {
+      background: #08a4ff;
+      color: #fff;
+    }
+
+    .step p {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      transition: color 0.3s ease;
+    }
+
+    .active p {
+      color: #08a4ff;
+    }
+
+    /* ========================
+       CARD
+    ======================== */
+
+    .card {
+      background: #fff;
+      margin: 18px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ========================
+       EVENT
+    ======================== */
+
+    .event {
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .event img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .event-info {
+      padding: 20px;
+    }
+
+    .event-info h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .event-info p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0;
+    }
+
+    /* ========================
+       SECTION & FORM
+    ======================== */
+
+    .section {
+      padding: 22px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    /* FIX: Label sekarang terhubung ke input via for */
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .required {
+      color: #ff2b55;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #d7dbe4;
+      border-radius: 14px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #08a4ff;
+      box-shadow: 0 0 0 3px rgba(8, 164, 255, 0.12);
+    }
+
+    /* FIX: Tampilan select konsisten lintas browser */
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    /* FIX: Textarea hanya bisa di-resize vertikal */
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* ========================
+       PHONE GROUP
+    ======================== */
+
+    .phone {
+      display: flex;
+    }
+
+    .phone select {
+      width: 100px;
+      border-radius: 14px 0 0 14px;
+      flex-shrink: 0;
+    }
+
+    .phone input {
+      border-left: none;
+      border-radius: 0 14px 14px 0;
+    }
+
+    /* ========================
+       TICKET HOLDER
+    ======================== */
+
+    .ticket-holder {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      background: #fafafa;
+    }
+
+    .ticket-holder h4 {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    /* ========================
+       SUMMARY
+    ======================== */
+
+    .summary {
+      padding: 22px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 15px;
+      gap: 12px;
+    }
+
+    .row span {
+      flex-shrink: 0;
+    }
+
+    .row strong {
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .total {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ececec;
+      margin: 18px 0;
+    }
+
+    /* ========================
+       AGREEMENT
+    ======================== */
+
+    .agreement {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8fbff;
+      border: 1px solid #d9ecff;
+      border-radius: 14px;
+      align-items: flex-start;
+    }
+
+    .agreement input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+      accent-color: #08a4ff;
+    }
+
+    .agreement p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* ========================
+       FOOTER
+    ======================== */
+
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      padding: 18px;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08);
+      z-index: 100;
+    }
+
+    .footer-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .footer-label {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .footer-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .checkout {
+      width: 100%;
+      height: 56px;
+      border: none;
+      border-radius: 14px;
+      background: #08a4ff;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.15s ease;
+    }
+
+    .checkout:hover {
+      background: #0b8be2;
+    }
+
+    .checkout:active {
+      transform: scale(0.98);
+    }
+
+    .checkout:disabled {
+      background: #cfd8e3;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ========================
+       LOADING OVERLAY
+    ======================== */
+
+    .loading {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 55px;
+      height: 55px;
+      border: 5px solid #ddd;
+      border-top: 5px solid #08a4ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .loading p {
+      margin-top: 18px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #444;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    @keyframes spin {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+  </style>
+</head>
+<body>
+<!-- =========================
+       LOADING OVERLAY
+       (Hanya satu, di luar container)
+  ========================= -->
+<div class="loading" id="loading">
+<div class="spinner"></div>
+<p>Mohon tunggu...<br/>Sedang memproses data pemesanan</p>
+</div>
+<div class="container">
+<!-- =========================
+         HEADER
+    ========================= -->
+<header>
+<div class="logo">
+<span>ETA</span><span>TIX</span>
+</div>
+</header>
+<!-- =========================
+         STEPPER
+    ========================= -->
+<div class="stepper">
+<!-- FIX: Tambah class "completed" agar garis ke step berikutnya berwarna biru -->
+<div class="step completed active">
+<div class="circle">1</div>
+<p>Pilih Tiket</p>
+</div>
+<div class="step active">
+<div class="circle">2</div>
+<p>Data Pemesan</p>
+</div>
+<div class="step">
+<div class="circle">3</div>
+<p>Pembayaran</p>
+</div>
+</div>
+<!-- =========================
+         EVENT INFO
+    ========================= -->
+<div class="card">
+<div class="event">
+<img alt="Banner Event" id="eventBanner" src="banner.png"/>
+<div class="event-info">
+<h2 id="eventName">Cooltura Festival 2026</h2>
+<p id="eventDate">📅 06 September 2026</p>
+<p id="eventTime">🕗 14:00 - 22:00 WIB</p>
+<p id="eventLocation">📍 Semarang, Jawa Tengah</p>
+</div>
+</div>
+</div>
+<!-- =========================
+         DATA PEMESAN
+    ========================= -->
+<div class="card">
+<div class="section">
+<div class="section-title">Data Pemesan</div>
+<!-- FIX: Tambah atribut "for" pada setiap label -->
+<label for="nama">
+          Nama Lengkap <span class="required">*</span>
+</label>
+<input autocomplete="name" id="nama" placeholder="Masukkan nama lengkap" type="text"/>
+<label for="identitas">
+          Jenis Identitas <span class="required">*</span>
+</label>
+<select id="identitas">
+<option value="">Pilih Jenis Identitas</option>
+<option>KTP</option>
+<option>SIM</option>
+<option>Paspor</option>
+<option>Kartu Pelajar</option>
+</select>
+<label for="nomorId">
+          Nomor Identitas <span class="required">*</span>
+</label>
+<input autocomplete="off" id="nomorId" placeholder="Masukkan nomor identitas" type="text"/>
+<label for="email">
+          E-mail <span class="required">*</span>
+</label>
+<input autocomplete="email" id="email" placeholder="contoh@email.com" type="email"/>
+<label for="wa">
+          Nomor WhatsApp <span class="required">*</span>
+</label>
+<div class="phone">
+<select id="kodeNegara">
+<option value="+62">+62</option>
+<option value="+60">+60</option>
+<option value="+65">+65</option>
+<option value="+66">+66</option>
+</select>
+<!-- FIX: Tambah inputmode="tel" agar keyboard mobile menampilkan angka -->
+<input autocomplete="tel" id="wa" inputmode="tel" placeholder="81234567890" type="tel"/>
+</div>
+<label for="alamat">
+          Alamat Lengkap <span class="required">*</span>
+</label>
+<textarea autocomplete="street-address" id="alamat" placeholder="Masukkan alamat lengkap" rows="4"></textarea>
+</div>
+</div>
+<!-- =========================
+         DATA PEMEGANG TIKET
+    ========================= -->
+<div class="card">
+<div class="section">
+<div class="section-title">Data Pemegang Tiket</div>
+<div id="ticketHolders">
+<!-- JavaScript akan mengisi otomatis -->
+</div>
+</div>
+</div>
+<!-- =========================
+         RINGKASAN PESANAN
+    ========================= -->
+<div class="card">
+<div class="summary">
+<div class="section-title">Ringkasan Pesanan</div>
+<div class="row">
+<span>Nama Event</span>
+<strong id="summaryEvent">KENANGAN FESTIVAL 2026</strong>
+</div>
+<div class="row">
+<span>Total Tiket</span>
+<strong id="summaryQty">0</strong>
+</div>
+<hr/>
+<div id="summaryItems">
+<!-- JavaScript akan mengisi otomatis -->
+</div>
+<hr/>
+<div class="row">
+<span>Subtotal</span>
+<strong id="summarySubtotal">Rp0</strong>
+</div>
+<div class="row total">
+<span>Grand Total</span>
+<strong id="grandTotal">Rp0</strong>
+</div>
+<!-- FIX: Label untuk checkbox -->
+<div class="agreement">
+<input id="setuju" type="checkbox"/>
+<label for="setuju" style="margin-top:0;cursor:pointer;">
+<p style="margin:0;">
+              Saya menyatakan bahwa seluruh data yang saya isi adalah benar, lengkap, dan dapat dipertanggungjawabkan. Saya telah membaca, memahami, serta menyetujui seluruh syarat dan ketentuan pembelian tiket melalui TiketMart dan bersedia mengikuti seluruh peraturan yang ditetapkan oleh penyelenggara acara.
+            </p>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- =========================
+       FOOTER (fixed bottom)
+  ========================= -->
+<div class="footer">
+<div class="footer-info">
+<div>
+<div class="footer-label">Grand Total</div>
+<div class="footer-price" id="footerTotal">Rp0</div>
+</div>
+</div>
+<button class="checkout" disabled="" id="checkoutBtn">
+      Lanjut Pembayaran
+    </button>
+</div>
+<script>
+
+    /* ============================
+       FORMAT RUPIAH
+    ============================ */
+    function rupiah(angka) {
+      return "Rp " + Number(angka).toLocaleString("id-ID");
+    }
+
+    /* ============================
+       AMBIL DATA DARI LOCAL STORAGE
+    ============================ */
+    const cart = JSON.parse(
+      localStorage.getItem("etatix_cart") ||
+      '{"items":[],"totalQty":0,"totalPrice":0}'
+    );
+
+    /* ============================
+       JIKA TIDAK ADA TIKET
+    ============================ */
+    if (!cart.items || cart.items.length === 0) {
+      alert("Tidak ada tiket yang dipilih.");
+      window.location.href = "tiket.html";
+    }
+
+    /* ============================
+       RINGKASAN PESANAN
+    ============================ */
+    document.getElementById("summaryQty").textContent = cart.totalQty;
+    document.getElementById("summarySubtotal").textContent = rupiah(cart.totalPrice);
+    document.getElementById("grandTotal").textContent = rupiah(cart.totalPrice);
+    document.getElementById("footerTotal").textContent = rupiah(cart.totalPrice);
+
+    const summaryItems = document.getElementById("summaryItems");
+
+    cart.items.forEach(function (item) {
+      summaryItems.innerHTML +=
+        '<div class="row">' +
+          '<span>' + item.jenis + ' &times; ' + item.jumlah + '</span>' +
+          '<strong>' + rupiah(item.harga * item.jumlah) + '</strong>' +
+        '</div>';
+    });
+
+    /* ============================
+       DATA PEMEGANG TIKET
+    ============================ */
+    const holderBox = document.getElementById("ticketHolders");
+
+    if (cart.totalQty > 1) {
+
+      for (let i = 2; i <= cart.totalQty; i++) {
+
+        /* Buat daftar opsi jenis tiket dari cart */
+        let optionsHtml = '<option value="">Pilih Jenis Tiket</option>';
+        cart.items.forEach(function (x) {
+          optionsHtml += '<option>' + x.jenis + '</option>';
+        });
+
+        holderBox.innerHTML +=
+          '<div class="ticket-holder">' +
+            '<h4>Pemegang Tiket ' + i + '</h4>' +
+
+            '<label for="holderName' + i + '">' +
+              'Nama Lengkap <span class="required">*</span>' +
+            '</label>' +
+            '<input type="text" class="holderName" id="holderName' + i + '" placeholder="Masukkan nama lengkap" autocomplete="name">' +
+
+            '<label for="holderType' + i + '">' +
+              'Jenis Tiket <span class="required">*</span>' +
+            '</label>' +
+            '<select class="holderType" id="holderType' + i + '">' +
+              optionsHtml +
+            '</select>' +
+          '</div>';
+
+      }
+
+    } else {
+
+      holderBox.innerHTML =
+        '<div style="color:#666;font-size:14px;">' +
+          'Pembeli merupakan pemegang tiket.' +
+        '</div>';
+
+    }
+
+    /* ============================
+       CHECKBOX TOGGLE
+    ============================ */
+    const agree = document.getElementById("setuju");
+    const btn = document.getElementById("checkoutBtn");
+
+    agree.addEventListener("change", function () {
+      btn.disabled = !this.checked;
+    });
+
+    /* ============================
+       VALIDASI
+    ============================ */
+    function validasi() {
+
+      /* Cek field wajib utama */
+      var wajib = ["nama", "identitas", "nomorId", "email", "wa", "alamat"];
+
+      for (var i = 0; i < wajib.length; i++) {
+        var el = document.getElementById(wajib[i]);
+        if (!el.value.trim()) {
+          alert("Mohon lengkapi seluruh data.");
+          el.focus();
+          return false;
+        }
+      }
+
+      /* Validasi email */
+      var emailVal = document.getElementById("email").value;
+      var emailRegex = /^\S+@\S+\.\S+$/;
+      if (!emailRegex.test(emailVal)) {
+        alert("Format email tidak valid.");
+        document.getElementById("email").focus();
+        return false;
+      }
+
+      /* FIX: Regex WhatsApp disesuaikan dengan placeholder (mulai dari "8", bukan "08") */
+      var waVal = document.getElementById("wa").value.trim();
+      if (!/^8[0-9]{8,13}$/.test(waVal)) {
+        alert("Nomor WhatsApp tidak valid.\nGunakan format: 81234567890");
+        document.getElementById("wa").focus();
+        return false;
+      }
+
+      /* Validasi pemegang tiket tambahan */
+      var holderNames = document.querySelectorAll(".holderName");
+      var holderTypes = document.querySelectorAll(".holderType");
+
+      for (var j = 0; j < holderNames.length; j++) {
+        if (holderNames[j].value.trim() === "") {
+          alert("Lengkapi nama pemegang tiket.");
+          holderNames[j].focus();
+          return false;
+        }
+        if (holderTypes[j].value === "") {
+          alert("Pilih jenis tiket untuk pemegang tiket.");
+          holderTypes[j].focus();
+          return false;
+        }
+      }
+
+      /* Validasi persetujuan */
+      if (!agree.checked) {
+        alert("Anda harus menyetujui syarat dan ketentuan.");
+        return false;
+      }
+
+      return true;
+    }
+
+    /* ============================
+       SIMPAN DATA KE LOCAL STORAGE
+    ============================ */
+    function simpanData() {
+
+      var holders = [];
+
+      document.querySelectorAll(".ticket-holder").forEach(function (card) {
+        var namaEl = card.querySelector(".holderName");
+        var jenisEl = card.querySelector(".holderType");
+        if (namaEl && jenisEl) {
+          holders.push({
+            nama: namaEl.value,
+            jenis: jenisEl.value
+          });
+        }
+      });
+
+      var order = {
+        nama: document.getElementById("nama").value,
+        identitas: document.getElementById("identitas").value,
+        nomorIdentitas: document.getElementById("nomorId").value,
+        email: document.getElementById("email").value,
+        kodeNegara: document.getElementById("kodeNegara").value,
+        wa: document.getElementById("wa").value,
+        alamat: document.getElementById("alamat").value,
+        ticketHolder: holders,
+        cart: cart
+      };
+
+      localStorage.setItem("etatix_order", JSON.stringify(order));
+    }
+
+    /* ============================
+       CHECKOUT
+    ============================ */
+    btn.addEventListener("click", function () {
+      if (!validasi()) return;
+
+      simpanData();
+
+      document.getElementById("loading").style.display = "flex";
+
+      setTimeout(function () {
+        window.location.href = "qris.html";
+      }, 1500);
+    });
+
+  </script>
+</body>
+</html>
