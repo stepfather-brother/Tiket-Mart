@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>E-Ticket Berhasil | COOLTURA FESTIVAL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(180deg,#eef9ff,#ffffff);
+
+overflow-x:hidden;
+
+color:#111;
+
+padding-bottom:140px;
+
+}
+
+/* Background */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background:
+
+radial-gradient(circle at top,#00d4ff22,transparent 40%),
+
+radial-gradient(circle at bottom,#00ff9920,transparent 35%),
+
+url("poster.png") center/cover;
+
+filter:blur(35px);
+
+transform:scale(1.2);
+
+z-index:-2;
+
+opacity:.35;
+
+}
+
+.container{
+
+max-width:480px;
+
+margin:auto;
+
+padding:20px;
+
+}
+
+/* SUCCESS */
+
+.success{
+
+background:#fff;
+
+border-radius:30px;
+
+padding:28px;
+
+text-align:center;
+
+box-shadow:
+
+0 15px 40px rgba(0,0,0,.10);
+
+animation:fadeUp .8s ease;
+
+}
+
+.success-icon{
+
+width:95px;
+
+height:95px;
+
+border-radius:50%;
+
+margin:auto;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:50px;
+
+background:
+
+linear-gradient(135deg,#00ff88,#00d46a);
+
+color:#fff;
+
+box-shadow:
+
+0 0 30px rgba(0,255,136,.45);
+
+animation:pulse 2s infinite;
+
+}
+
+.success h2{
+
+margin-top:20px;
+
+font-size:30px;
+
+font-weight:800;
+
+}
+
+.success p{
+
+margin-top:10px;
+
+font-size:15px;
+
+color:#666;
+
+line-height:1.6;
+
+}
+
+/* Ticket */
+
+.ticket{
+
+margin-top:25px;
+
+background:#fff;
+
+border-radius:30px;
+
+overflow:hidden;
+
+box-shadow:
+
+0 18px 45px rgba(0,0,0,.10);
+
+}
+
+.ticket-header{
+
+background:
+
+linear-gradient(135deg,#00d4ff,#00a2ff);
+
+padding:28px;
+
+color:#fff;
+
+text-align:center;
+
+}
+
+.ticket-header h1{
+
+font-size:26px;
+
+font-weight:800;
+
+}
+
+.ticket-header span{
+
+display:block;
+
+margin-top:6px;
+
+font-size:14px;
+
+opacity:.95;
+
+}
+
+.ticket-body{
+
+padding:28px;
+
+}
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:14px 0;
+
+border-bottom:1px dashed #ddd;
+
+gap:10px;
+
+}
+
+.label{
+
+font-weight:600;
+
+color:#666;
+
+}
+
+.value{
+
+font-weight:700;
+
+text-align:right;
+
+word-break:break-word;
+
+}
+
+.total{
+
+font-size:22px;
+
+font-weight:800;
+
+color:#00aaff;
+
+}
+
+/* QR */
+
+.qr-area{
+
+margin-top:30px;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+#qrcode{
+
+padding:16px;
+
+background:#fff;
+
+border-radius:18px;
+
+box-shadow:
+
+0 8px 20px rgba(0,0,0,.08);
+
+}
+
+/* Barcode */
+
+.barcode-area{
+
+margin-top:25px;
+
+text-align:center;
+
+}
+
+#barcode{
+
+width:100%;
+
+height:80px;
+
+}
+
+/* Ticket ID */
+
+.ticket-id{
+
+margin-top:15px;
+
+text-align:center;
+
+font-size:13px;
+
+letter-spacing:2px;
+
+font-weight:700;
+
+color:#777;
+
+}
+
+/* Notice */
+
+.notice{
+
+margin-top:22px;
+
+padding:18px;
+
+background:#f5fbff;
+
+border-left:5px solid #00aaff;
+
+border-radius:15px;
+
+font-size:13px;
+
+line-height:1.8;
+
+color:#444;
+
+}
+
+/* Buttons */
+
+.buttons{
+
+margin-top:28px;
+
+display:grid;
+
+gap:15px;
+
+}
+
+.btn{
+
+border:none;
+
+padding:18px;
+
+border-radius:18px;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.btn-download{
+
+background:
+
+linear-gradient(135deg,#00d4ff,#00a2ff);
+
+color:#fff;
+
+}
+
+.btn-pdf{
+
+background:
+
+linear-gradient(135deg,#00d27a,#00b862);
+
+color:#fff;
+
+}
+
+.btn-home{
+
+background:#111;
+
+color:#fff;
+
+}
+
+.btn:hover{
+
+transform:translateY(-3px);
+
+}
+
+/* Footer */
+
+.footer{
+
+margin-top:30px;
+
+text-align:center;
+
+font-size:12px;
+
+color:#888;
+
+}
+
+/* Floating Glow */
+
+.glow{
+
+position:fixed;
+
+width:250px;
+
+height:250px;
+
+border-radius:50%;
+
+background:#00d4ff33;
+
+filter:blur(90px);
+
+top:-70px;
+
+right:-70px;
+
+z-index:-1;
+
+}
+
+.glow2{
+
+position:fixed;
+
+width:230px;
+
+height:230px;
+
+border-radius:50%;
+
+background:#00ff8833;
+
+filter:blur(90px);
+
+bottom:-60px;
+
+left:-60px;
+
+z-index:-1;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(1)}
+
+50%{transform:scale(1.08)}
+
+100%{transform:scale(1)}
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="glow"></div>
+<div class="glow2"></div>
+
+<div class="container">
+
+<div class="success">
+
+<div class="success-icon">
+✔
+</div>
+
+<h2>Pembayaran Berhasil</h2>
+
+<p>
+
+Terima kasih.
+
+E-Ticket Anda berhasil dibuat.
+
+Silakan simpan tiket ini dan tunjukkan QR Code saat memasuki venue.
+
+</p>
+
+</div>
+
+<!-- PART 2 AKAN DIMULAI DARI SINI -->
+  <!-- ===========================
+E-TICKET PREMIUM
+=========================== -->
+
+<div class="ticket" id="ticket">
+
+<div class="ticket-header">
+
+<h1>COOLTURA FESTIVAL</h1>
+
+<span>Official Electronic Ticket</span>
+
+</div>
+
+<div class="ticket-body">
+
+<div class="row">
+<div class="label">Nama Pemesan</div>
+<div class="value" id="nama">-</div>
+</div>
+
+<div class="row">
+<div class="label">Kategori Tiket</div>
+<div class="value" id="jenisTiket">-</div>
+</div>
+
+<div class="row">
+<div class="label">Jumlah Tiket</div>
+<div class="value" id="jumlahTiket">0</div>
+</div>
+
+<div class="row">
+<div class="label">E-Mail</div>
+<div class="value" id="email">-</div>
+</div>
+
+<div class="row">
+<div class="label">WhatsApp</div>
+<div class="value" id="wa">-</div>
+</div>
+
+<div class="row">
+<div class="label">Nomor Identitas</div>
+<div class="value" id="nomorId">-</div>
+</div>
+
+<div class="row">
+<div class="label">Tanggal Event</div>
+<div class="value">
+6 September 2026
+</div>
+</div>
+
+<div class="row">
+<div class="label">Venue</div>
+<div class="value">
+Semarang
+</div>
+</div>
+
+<div class="row">
+<div class="label">Gate</div>
+<div class="value" id="gate">
+GATE A
+</div>
+</div>
+
+<div class="row">
+<div class="label">Seat</div>
+<div class="value" id="seat">
+FREE STANDING
+</div>
+</div>
+
+<div class="row">
+
+<div class="label">
+Status
+</div>
+
+<div class="value"
+style="
+color:#00b15d;
+font-weight:800;
+">
+PAID
+</div>
+
+</div>
+
+<div class="row total">
+
+<div>Total Pembayaran</div>
+
+<div id="totalBayar">
+
+Rp 0
+
+</div>
+
+</div>
+
+<div class="ticket-id">
+
+Ticket ID
+
+<br>
+
+<strong id="ticketId">
+
+COOLTURA-000000
+
+</strong>
+
+</div>
+
+<div class="qr-area">
+
+<div id="qrcode"></div>
+
+</div>
+
+<div class="barcode-area">
+
+<svg id="barcode"></svg>
+
+</div>
+
+<div class="notice">
+
+<b>INFORMASI</b>
+
+<br><br>
+
+• Tiket hanya berlaku untuk 1 orang.
+
+<br>
+
+• QR Code akan dipindai saat check-in.
+
+<br>
+
+• Dilarang memperjualbelikan tiket.
+
+<br>
+
+• Simpan tiket hingga acara selesai.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BUTTON -->
+
+<div class="buttons">
+
+<button
+class="btn btn-download"
+id="downloadPNG">
+
+📥 Download PNG
+
+</button>
+
+<button
+class="btn btn-pdf"
+id="downloadPDF">
+
+📄 Download PDF
+
+</button>
+
+<button
+class="btn btn-home"
+onclick="location.href='index.html'">
+
+🏠 Kembali ke Beranda
+
+</button>
+
+</div>
+
+<div class="footer">
+
+© 2026 Cooltura Festival
+
+<br>
+
+Official E-Ticket System
+
+</div>
+
+</div>
+
+<!-- PENUTUP BODY -->
+  <script>
+
+/* ===========================
+AMBIL DATA DARI form.html
+=========================== */
+
+const order=JSON.parse(localStorage.getItem("etatix_order")||"{}");
+const cart=order.cart||{items:[],totalQty:0,totalPrice:0};
+const nama=order.nama||"-";
+const email=order.email||"-";
+const wa=((order.kodeNegara||"")+" "+(order.wa||"")).trim();
+const nomorId=order.nomorIdentitas||"-";
+const jenisTiket=(cart.items||[]).map(i=>i.jenis).join(", ")||"-";
+const jumlahTiket=String(cart.totalQty||0);
+const total=Number(cart.totalPrice||0);
+
+/* ===========================
+TAMPILKAN DATA
+=========================== */
+
+document.getElementById("nama").innerText =
+nama;
+
+document.getElementById("email").innerText =
+email;
+
+document.getElementById("wa").innerText =
+wa;
+
+document.getElementById("nomorId").innerText =
+nomorId;
+
+document.getElementById("jenisTiket").innerText =
+jenisTiket;
+
+document.getElementById("jumlahTiket").innerText =
+jumlahTiket;
+
+document.getElementById("totalBayar").innerHTML =
+"Rp " +
+total.toLocaleString("id-ID");
+
+/* ===========================
+MEMBUAT TICKET ID
+=========================== */
+
+function randomCode(length){
+
+const chars =
+"ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+let result="";
+
+for(let i=0;i<length;i++){
+
+result+=chars.charAt(
+
+Math.floor(
+
+Math.random()*chars.length
+
+)
+
+);
+
+}
+
+return result;
+
+}
+
+let ticketId =
+localStorage.getItem("ticketId");
+
+if(!ticketId){
+
+ticketId =
+"COOLTURA-"+
+new Date().getFullYear()+
+"-"+
+randomCode(8);
+
+localStorage.setItem(
+"ticketId",
+ticketId
+);
+
+}
+
+document.getElementById("ticketId").innerHTML =
+ticketId;
+
+/* ===========================
+QR CODE
+=========================== */
+
+new QRCode(
+
+document.getElementById("qrcode"),
+
+{
+
+text:JSON.stringify({
+
+ticket_id:ticketId,
+
+nama:nama,
+
+email:email,
+
+wa:wa,
+
+jenis:jenisTiket,
+
+jumlah:jumlahTiket,
+
+total:total
+
+}),
+
+width:180,
+
+height:180,
+
+correctLevel:
+QRCode.CorrectLevel.H
+
+}
+
+);
+
+/* ===========================
+BARCODE
+=========================== */
+
+JsBarcode(
+
+"#barcode",
+
+ticketId,
+
+{
+
+format:"CODE128",
+
+displayValue:true,
+
+fontSize:18,
+
+height:65,
+
+margin:10
+
+}
+
+);
+
+/* ===========================
+GATE OTOMATIS
+=========================== */
+
+const gateList=[
+"GATE A",
+"GATE B",
+"GATE C",
+"GATE D"
+];
+
+document.getElementById("gate").innerHTML=
+
+gateList[
+Math.floor(
+Math.random()*gateList.length
+)
+];
+
+/* ===========================
+SEAT
+=========================== */
+
+if(
+
+jenisTiket
+.toLowerCase()
+.includes("vip")
+
+){
+
+document.getElementById("seat").innerHTML=
+
+"VIP AREA";
+
+}
+
+else if(
+
+jenisTiket
+.toLowerCase()
+.includes("festival")
+
+){
+
+document.getElementById("seat").innerHTML=
+
+"FESTIVAL";
+
+}
+
+else{
+
+document.getElementById("seat").innerHTML=
+
+"FREE STANDING";
+
+}
+
+/* ===========================
+ANTI BACK
+=========================== */
+
+history.pushState(null,null,location.href);
+
+window.onpopstate=function(){
+
+history.go(1);
+
+};
+
+  </script>
+<script>
+
+/* ===========================
+DOWNLOAD PNG
+=========================== */
+
+document
+.getElementById("downloadPNG")
+.onclick = function(){
+
+const ticket =
+document.getElementById("ticket");
+
+html2canvas(ticket,{
+scale:3,
+useCORS:true,
+backgroundColor:"#ffffff"
+})
+.then(function(canvas){
+
+const link =
+document.createElement("a");
+
+link.download =
+"E-Ticket-"+ticketId+".png";
+
+link.href =
+canvas.toDataURL("image/png");
+
+link.click();
+
+});
+
+};
+
+/* ===========================
+DOWNLOAD PDF
+=========================== */
+
+document
+.getElementById("downloadPDF")
+.onclick = async function(){
+
+const ticket =
+document.getElementById("ticket");
+
+const canvas =
+await html2canvas(ticket,{
+scale:3,
+useCORS:true,
+backgroundColor:"#ffffff"
+});
+
+const img =
+canvas.toDataURL("image/png");
+
+const pdf =
+new jspdf.jsPDF({
+
+orientation:"portrait",
+unit:"mm",
+format:"a4"
+
+});
+
+const pageWidth =
+pdf.internal.pageSize.getWidth();
+
+const imgWidth =
+pageWidth-20;
+
+const imgHeight =
+canvas.height*imgWidth/canvas.width;
+
+pdf.addImage(
+img,
+"PNG",
+10,
+10,
+imgWidth,
+imgHeight
+);
+
+pdf.save(
+"E-Ticket-"+ticketId+".pdf"
+);
+
+};
+
+/* ===========================
+ANIMASI SUKSES
+=========================== */
+
+setTimeout(function(){
+
+const icon =
+document.querySelector(".success-icon");
+
+icon.style.transform =
+"scale(1.15)";
+
+setTimeout(function(){
+
+icon.style.transform =
+"scale(1)";
+
+},300);
+
+},500);
+
+/* ===========================
+CONFETTI SEDERHANA
+=========================== */
+
+for(let i=0;i<80;i++){
+
+const c =
+document.createElement("div");
+
+c.style.position="fixed";
+c.style.width="8px";
+c.style.height="8px";
+c.style.left=Math.random()*100+"vw";
+c.style.top="-20px";
+c.style.borderRadius="50%";
+c.style.pointerEvents="none";
+c.style.background=
+["#00d4ff","#00ff88","#ffd400","#ff4d6d","#8b5cf6"][Math.floor(Math.random()*5)];
+
+c.style.zIndex="9999";
+
+document.body.appendChild(c);
+
+const duration=
+3000+Math.random()*2000;
+
+c.animate([
+
+{
+transform:"translateY(0) rotate(0deg)",
+opacity:1
+},
+
+{
+transform:
+`translateY(${window.innerHeight+100}px) rotate(${720*Math.random()}deg)`,
+opacity:0
+}
+
+],{
+
+duration:duration,
+
+iterations:1,
+
+easing:"ease-out"
+
+});
+
+setTimeout(()=>c.remove(),duration);
+
+}
+
+/* ===========================
+BERSIHKAN DRAFT FORM
+=========================== */
+
+[
+"draft_nama",
+"draft_identitas",
+"draft_nomorId",
+"draft_email",
+"draft_wa",
+"draft_alamat"
+].forEach(key=>localStorage.removeItem(key));
+
+</script>
+
+</body>
+</html>
